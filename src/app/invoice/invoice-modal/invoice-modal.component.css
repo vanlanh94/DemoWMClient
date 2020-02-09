@@ -1,0 +1,13 @@
+.md-description {
+    height: 120px;
+}
+
+.invalid-common {
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.invalid-common-input {
+    border-color: #dc3545;
+}

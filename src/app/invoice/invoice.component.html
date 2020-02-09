@@ -1,0 +1,114 @@
+<div class="container">
+    <form [formGroup]="invoiceSearch" (ngSubmit)="onSubmitSearch()">
+        <div class="row">
+            <div class="col-md-2">
+                <b>Invoice List</b>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary btn-sm"
+                        title="add Invoice"  (click)="invoiceModal.openInvoiceModal(true, 0)">
+                    <i class="fa fa-plus"></i> Add new Invoice
+                </button>
+            </div>
+            <div class="col-md-5">
+                <input type="text" formControlName="keyword" class="form-control" id="searchInvoice"
+                       placeholder="Enter keyword search...."
+                       [ngClass]="{ 'is-invalid': submitted && f.keyword.errors }" (keyup)="submitted = false">
+                <div *ngIf="submitted && f.keyword.errors" class="invalid-feedback">
+                    <div *ngIf="f.keyword.errors.required">Keyword is required</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-default btn-sm" title="search" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="row col-md-12">
+        <ngx-datatable #invoiceDataTable
+                       class='material'
+                       [rows]='invoices'
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [limit]="10"
+                       [footerHeight]="50"
+                       [rowHeight]="50">
+            <ngx-datatable-column name="#" [sortable]="false" [width]="80">
+                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <p>{{rowIndex + 1}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="User" prop="user" [width]="100">
+                <ng-template let-user="value" ngx-datatable-cell-template>
+                    <p>{{user.firstName + ' ' + user.lastName}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Product" prop="product.name">
+                <ng-template let-product="value" ngx-datatable-cell-template>
+                    <p>{{product}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Type" prop="type" [width]="200">
+                <ng-template let-type="value" ngx-datatable-cell-template>
+                    <p>{{type}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Quantity" prop="quantity" [width]="300">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                    <p>{{value}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Time" prop="time">
+                <ng-template let-time="value" ngx-datatable-cell-template>
+                    <p>{{time | date: 'dd-LL-yyyy'}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Action" [sortable]="false">
+                <ng-template let-value="value" let-invoice="row" ngx-datatable-cell-template>
+                    <div class="actionButton">
+                        <button class="btn btn-info btn-sm" title="edit"
+                                (click)="invoiceModal.openInvoiceModal(false, invoice.id)">
+                            <i class="fa fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" title="delete"
+                                (click)="deleteConfirm(modalConfirmDelete, invoice.id)">
+                            <i class="fa fa-trash"></i></button>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+
+        </ngx-datatable>
+    </div>
+</div>
+
+<app-invoice-modal #invoiceModal (invoiceChange)="reloadInvoiceTable()"></app-invoice-modal>
+
+<ng-template #modalConfirmDelete>
+    <div class="modal-header downloadAttachment">
+        <h4 class="modal-title pull-left">Confirmation</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Do you want to delete this Invoice?
+    </div>
+    <div class="modal-footer pull-right">
+        <button type="button" class="btn btn-default" (click)="confirmDelete()">OK</button>
+        <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Cancel</button>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+

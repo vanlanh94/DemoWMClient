@@ -1,0 +1,107 @@
+<div class="container">
+    <form [formGroup]="productSearch" (ngSubmit)="onSubmitSearch()">
+    <div class="row">
+        <div class="col-md-2">
+            <b>Product List</b>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-primary btn-sm" (click)="productModal.openProductModal(true, 0)" title="add product">
+                <i class="fa fa-plus"></i> Add new Product
+            </button>
+        </div>
+        <div class="col-md-5">
+            <input type="text" formControlName="keyword" class="form-control" id="searchProduct"
+                   placeholder="Enter keyword search....">
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-default btn-sm" title="search product" type="submit">
+                <i class="fa fa-search"></i> Search
+            </button>
+        </div>
+    </div>
+    </form>
+    <div class="row col-md-12">
+        <ngx-datatable #productDataTable
+                       class='material'
+                       [rows]='products'
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [limit]="10"
+                       [footerHeight]="50"
+                       [rowHeight]="50">
+            <ngx-datatable-column name="#" [sortable]="false" [width]="80">
+                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                    <p>{{rowIndex + 1}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Name" prop="name" [width]="100">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                    <p>{{value}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Quantity In Stock" prop="quantityInStock" [width]="200">
+                <ng-template let-quantity="value" ngx-datatable-cell-template>
+                    <p>{{quantity}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Category" prop="category.name" [width]="300">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                    <p>{{value}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Supplier" prop="supplier.name">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                    <p>{{value}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Price" prop="price">
+                <ng-template let-price="value" ngx-datatable-cell-template>
+                    <p>{{price}}</p>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Action" [sortable]="false">
+                <ng-template let-value="value" let-product="row" ngx-datatable-cell-template>
+                    <div class="actionButton">
+                        <button class="btn btn-info btn-sm" title="edit" (click)="productModal.openProductModal(false, product.id)">
+                            <i class="fa fa-edit"></i> </button>
+                        <button class="btn btn-danger btn-sm" title="delete" (click)="deleteConfirm(modalConfirmDelete, product.id)">
+                            <i class="fa fa-trash"></i> </button>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+
+        </ngx-datatable>
+    </div>
+</div>
+
+<app-product-modal #productModal (productChange)="reloadProductTable()"></app-product-modal>
+
+<ng-template #modalConfirmDelete>
+    <div class="modal-header downloadAttachment">
+        <h4 class="modal-title pull-left">Confirmation</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Do you want to delete this product?
+    </div>
+    <div class="modal-footer pull-right">
+        <button type="button" class="btn btn-default" (click)="confirmDelete()">OK</button>
+        <button type="button" class="btn btn-primary" (click)="modalRef.hide()">Cancel</button>
+    </div>
+</ng-template>
+
+
+
+
+
+
+
+

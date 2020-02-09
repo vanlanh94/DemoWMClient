@@ -1,0 +1,13 @@
+  <div class="col-md-5">
+    <input type="text" formControlName="keyword" class="form-control" id="searchProduct"
+           placeholder="Enter keyword search....">
+    <!--[ngClass]="{ 'is-invalid': submitted && f.keyword.errors }" (keyup)="submitted = false">-->
+    <!--<div *ngIf="submitted && f.keyword.errors" class="invalid-feedback">-->
+    <!--<div *ngIf="f.keyword.errors.required">Keyword is required</div>-->
+    <!--</div>-->
+  </div>
+  <div class="col-md-3">
+    <button class="btn btn-default btn-sm" title="search product" type="submit">
+      <i class="fa fa-search"></i> Search
+    </button>
+  </div>

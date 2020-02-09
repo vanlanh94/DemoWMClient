@@ -1,0 +1,176 @@
+<div class="modal fade" bsModal #invoiceModal="bs-modal" [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Header of product modal -->
+            <div class="modal-header modal-model">
+                <h4 id="dialog-static-name" class="modal-title">{{title}}</h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="invoiceModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Body of invoice modal -->
+            <div class="modal-body">
+                <form [formGroup]="invoiceForm" (ngSubmit)="onSubmitInvoice()">
+                    <fieldset>
+                        <div class="row form-group">
+
+                            <div class="form-group col-md-6" formGroupName="product">
+                                <label for="productName">Product Name # Quantity In Stock:</label>
+                                <div class="" dropdown>
+                                    <select id="productName" class="input-sm form-control cus-dropdown"
+                                            data-container="body" data-size="10" data-width="100%"
+                                            data-select-on-tab="true"
+                                            data-none-selected-text="" tabindex="0" style="width:100%;"
+                                            formControlName="id"
+                                            [ngClass]="{ 'is-invalid': submitted && f.product.get('id').errors }">
+                                        <option value="" disabled [selected]="selectedInvoice === null">
+                                            - Select Product -
+                                        </option>
+                                        <option [value]="p.id" *ngFor="let p of products"
+                                                [selected]="selectedInvoice?.product.id === p.id">
+                                            {{p.name}} - (Quantity: {{p.quantityInStock}})
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngIf="submitted && f.product.get('id').errors"
+                                     class="invalid-feedback invalid-select">
+                                    <div *ngIf="f.product.get('id').errors.required">Product is required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6" formGroupName="user">
+                                <label for="userName">User Name:</label>
+                                <div class="" dropdown>
+                                    <select id="userName" class="input-sm form-control cus-dropdown"
+                                            data-container="body" data-size="10" data-width="100%"
+                                            data-select-on-tab="true"
+                                            data-none-selected-text="" tabindex="0" style="width:100%;"
+                                            formControlName="id"
+                                            [ngClass]="{ 'is-invalid': submitted && f.user.get('id').errors }">
+                                        <option value="" disabled [selected]="selectedInvoice === null">
+                                            - Select User -
+                                        </option>
+                                        <option [value]="u.id" *ngFor="let u of users"
+                                                [selected]="selectedInvoice?.user.id === u.id">
+                                            {{u.firstName + ' ' + u.lastName}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngIf="submitted && f.user.get('id').errors"
+                                     class="invalid-feedback invalid-select">
+                                    <div *ngIf="f.user.get('id').errors.required">User is required</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="form-group col-md-4">
+                                <label for="time">Date: </label>
+                                <input id="time" type="text" class="form-control"
+                                       [ngClass]="(f.time.errors && submitted)?'invalid-common-input':''"
+                                       bsDatepicker
+                                       formControlName="time"
+                                       [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"/>
+                                <div *ngIf="submitted && f.time.errors" class="invalid-common">
+                                    <div *ngIf="f.time.errors.required">Date is required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="type">Type:</label>
+                                <div class="" dropdown>
+                                    <select id="type" class="input-sm form-control cus-dropdown"
+                                            data-container="body" data-size="10" data-width="100%"
+                                            data-select-on-tab="true"
+                                            data-none-selected-text="" tabindex="0" style="width:100%;"
+                                            formControlName="type"
+                                            [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                                        <option value="" disabled [selected]="selectedInvoice === null">
+                                            - Select Type -
+                                        </option>
+                                        <option [value]="'import'"
+                                                [selected]="selectedInvoice?.type === 'import'">
+                                            Import
+                                        </option>
+                                        <option [value]="'export'"
+                                                [selected]="selectedInvoice?.type === 'export'">
+                                            Export
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngIf="submitted && f.type.errors"
+                                     class="invalid-feedback invalid-select">
+                                    <div *ngIf="f.type.errors.required">Type is required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="quantity">Quantity: </label>
+                                <div class="input-group" *ngIf="f.type.value">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon" *ngIf="f.type.value === 'import'">+</span>
+                                        <span class="input-group-text" id="basic-addon1" *ngIf="f.type.value === 'export'">-</span>
+                                    </div>
+                                    <input type="number" class="form-control"
+                                           [ngClass]="(f.quantity.errors && submitted)?'invalid-common-input':''"
+                                           formControlName="quantity" id="quantity">
+                                </div>
+                                <div class="input-group" *ngIf="!f.type.value">
+                                    <input type="text"
+                                           readonly disabled class="form-control"
+                                           [ngClass]="(f.quantity.errors && submitted)?'invalid-common-input':''">
+                                </div>
+                                <div *ngIf="submitted && f.quantity.errors" class="invalid-common">
+                                    <div *ngIf="f.quantity.errors.required">Quantity is required</div>
+                                    <div *ngIf="f.quantity.errors.min">Invalid Quantity</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="form-group col-md-12">
+                                <label for="description">Description:</label>
+                                <textarea formControlName="description" class="form-control md-description"
+                                          id="description" cols="100%"
+                                          placeholder="Enter invoice description"
+                                          [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+                                </textarea>
+                                <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                                    <div *ngIf="f.description.errors.required">Description is required</div>
+                                    <div *ngIf="f.description.errors.minlength">Description must be at least 5
+                                        characters
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <!-- Footer of product modal -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-default" (click)="invoiceModal.hide()">Close</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="loading-wrapper" class="loading-wrapper" *ngIf="isShowLoading">
+    <div class="blockUI blockMsg blockElement">
+        <h4>
+            <img [src]="'/assets/images/loading.gif'">
+            <span class="loading-text">
+        Please wait...
+      </span>
+        </h4>
+    </div>
+    <div class="blockUI blockOverlay"></div>
+</div>
+
+

@@ -1,0 +1,55 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div class="header">
+    <div class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+        <img class="logo" src="../assets/images/logo.webp"/>
+        <h2 class="header-title">Warehouse management</h2>
+    </div>
+</div>
+
+<!--<div class="row">-->
+    <!--<div class=" side">-->
+        <!--<div class="sidenav">-->
+            <!--<button class="dropdown-btn" href="#about">Category</button>-->
+            <!--<button class="dropdown-btn" href="#services">Supplier</button>-->
+            <!--<button class="dropdown-btn" href="/product">Product-->
+                <!--&lt;!&ndash;<i class="fa fa-caret-down"></i>&ndash;&gt;-->
+            <!--</button>-->
+            <!--&lt;!&ndash;<div class="dropdown-container">&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="#">Link 1</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="#">Link 2</a>&ndash;&gt;-->
+                <!--&lt;!&ndash;<a href="#">Link 3</a>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<button class="dropdown-btn"  href="/invoice">Invoice-->
+            <!--</button>-->
+            <!--<button class="dropdown-btn" href="#contact">User</button>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class=" main">-->
+        <!--<router-outlet></router-outlet>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="row">
+    <div class="sidebar">
+        <a href="#home"><i class="fas fa-home"></i> Home</a>
+        <a href="#contact"><i class="fas fa-tag"></i> Category</a>
+        <a href="#contact"><i class="fas fa-truck"></i> Supplier</a>
+        <a href="/product"><i class="fas fa-box-open"></i> Product</a>
+        <a href="/invoice"><i class="fas fa-file-invoice"></i> Invoice</a>
+        <a href="#clients"><i class="fas fa-user"></i> User</a>
+    </div>
+    <div class=" main">
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+
+<div class="wm-footer footer-padding text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>© All Rights Reserved by Lanh Tran - MRV&nbsp;<i class="fa fa-home"></i></p>
+            </div>
+        </div>
+    </div>
+</div>
